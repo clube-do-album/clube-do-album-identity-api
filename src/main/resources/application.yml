@@ -1,3 +1,23 @@
 spring:
   application:
     name: clube-do-album-identity-api
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://127.0.0.1:15432/clube_do_album_identity}
+    username: ${DATABASE_USERNAME:clube}
+    password: ${DATABASE_PASSWORD:clube}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: ${SERVER_PORT:8081}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:clube-do-album-local-development-secret-key-change-me}
+    expiration-seconds: ${JWT_EXPIRATION_SECONDS:3600}
