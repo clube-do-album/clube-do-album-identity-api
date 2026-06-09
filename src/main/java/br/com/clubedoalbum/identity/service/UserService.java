@@ -42,6 +42,20 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
+  public List<User> search(String query) {
+    String normalizedQuery = query == null ? "" : query.trim();
+
+    if (normalizedQuery.isBlank()) {
+      return userRepository.findAll();
+    }
+
+    return userRepository.findTop10ByNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByNameAsc(
+        normalizedQuery,
+        normalizedQuery
+    );
+  }
+
+  @Transactional(readOnly = true)
   public Optional<User> findById(UUID id) {
     return userRepository.findById(id);
   }

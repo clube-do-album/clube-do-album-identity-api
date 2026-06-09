@@ -7,6 +7,7 @@ API responsavel pela identidade dos usuarios da plataforma Clube do Album.
 - Cadastrar usuarios.
 - Realizar login simples.
 - Listar usuarios.
+- Buscar usuarios por nome ou e-mail.
 - Buscar usuario por id.
 - Salvar senha com hash BCrypt.
 - Emitir JWT para uso futuro pelo frontend/gateway.
@@ -111,6 +112,12 @@ Resposta:
 GET /users
 ```
 
+### Buscar usuarios por nome ou e-mail
+
+```http
+GET /users?query=maria
+```
+
 ### Buscar usuario por id
 
 ```http
@@ -182,4 +189,4 @@ docker run -d --name clube-do-album-identity-api \
 
 ## Status atual
 
-API criada com cadastro, listagem, busca de usuarios e login com JWT. Protecao dos endpoints com JWT sera implementada em etapa futura.
+API criada com cadastro, listagem, busca de usuarios por nome/e-mail, busca por id e login com JWT. Protecao dos endpoints com JWT sera implementada em etapa futura.
