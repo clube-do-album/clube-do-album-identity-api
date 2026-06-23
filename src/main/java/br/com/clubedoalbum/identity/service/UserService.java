@@ -46,13 +46,22 @@ public class UserService {
     String normalizedQuery = query == null ? "" : query.trim();
 
     if (normalizedQuery.isBlank()) {
-      return userRepository.findAll();
+      return List.of();
     }
 
     return userRepository.findTop10ByNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByNameAsc(
         normalizedQuery,
         normalizedQuery
     );
+  }
+
+  @Transactional(readOnly = true)
+  public List<User> findByIds(List<UUID> ids) {
+    if (ids.isEmpty()) {
+      return List.of();
+    }
+
+    return userRepository.findByIdIn(ids.stream().distinct().limit(50).toList());
   }
 
   @Transactional(readOnly = true)

@@ -36,7 +36,18 @@ public class UserController {
   }
 
   @GetMapping
-  public List<UserResponse> list(@RequestParam(required = false) String query) {
+  public List<UserResponse> list(
+      @RequestParam(required = false) String query,
+      @RequestParam(required = false) String ids
+  ) {
+    List<UUID> parsedIds = parseIds(ids);
+
+    if (!parsedIds.isEmpty()) {
+      return userService.findByIds(parsedIds).stream()
+          .map(UserResponse::from)
+          .toList();
+    }
+
     return userService.search(query).stream()
         .map(UserResponse::from)
         .toList();
@@ -48,5 +59,18 @@ public class UserController {
         .map(UserResponse::from)
         .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+  private List<UUID> parseIds(String ids) {
+    if (ids == null || ids.isBlank()) {
+      return List.of();
+    }
+
+    return List.of(ids.split(",")).stream()
+        .map(String::trim)
+        .filter(id -> !id.isBlank())
+        .limit(50)
+        .map(UUID::fromString)
+        .toList();
   }
 }
